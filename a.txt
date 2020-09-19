@@ -1,0 +1,5 @@
+a.out
+a.txt
+makefile
+shell.cpp
+testing.cpp
