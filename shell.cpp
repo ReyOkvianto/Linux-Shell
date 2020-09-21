@@ -97,7 +97,6 @@ int main() {
         struct tm* TI;
         time (&current_time);
         TI = localtime(&current_time);
-        // char* date_time = ctime(&current_time);
 
 
         string Time_t = asctime(TI);
@@ -137,10 +136,6 @@ int main() {
 
         //Piping
         vector <string> piped_parts = split(LineInput, "|");
-        // for(auto i = 0; i < piped_parts.size(); i++){
-        //     piped_parts[i] = trim_spaces(piped_parts[i]);
-        //     cout << piped_parts[i] << endl;
-        // }
 
         for(int i = 0; i < piped_parts.size(); i++){
             
@@ -155,24 +150,6 @@ int main() {
             if(pid == 0){ //child process
 
                 vector <string> parts;
-
-                // if(trim_spaces(LineInput).find("awk") == 0){
-                //     int quote_index = LineInput.find('\'');
-                //     LineInput = LineInput.substr(quote_index);
-                //     awk_command = true;
-                //     parts.push_back("awk");
-                //     // cout << "we found an awk lolz" << endl;
-                //     for(auto i = 0; i < LineInput.size(); i++){
-                //         if(LineInput[i] == '\''){
-                //             LineInput.erase(i, 1);
-                //         }
-                //     }
-                //     //cout << "LineInput pushed into vector: " << LineInput << endl;
-                //     parts.push_back(LineInput);
-
-                // } 
-                // cout << parts[i] << parts[i].size() <<endl;
-                // cout << parts[i + 1] << parts[i+1].size() << endl;
 
                 if(trim_spaces(LineInput).find("cd") == 0) {
                     string DIR_name = trim_spaces(split(LineInput, " ")[1]);
@@ -211,16 +188,11 @@ int main() {
                     string filename = trim_spaces(LineInput.substr(alligator_index + 1)); //a.txt
                 
                     LineInput = commands;
-                    //cout << "LineInput after parsing in <: " << LineInput << endl;
-                    //cout << "LineInput size: " << LineInput.size() << endl;
-                    //cout << "Filename: " << filename << endl;
-                    //cout << "Filename size: " << filename.size() << endl;
                     int fd = open(filename.c_str(), O_RDONLY|O_CREAT, S_IRUSR|S_IWUSR);
                     dup2(fd,0);
                     close(fd);
                 }
-                //cout << "LineInput after output RD: " << LineInput << endl;
-
+                
                 if(trim_spaces(LineInput).find("awk") == 0){
                     int quote_index = LineInput.find('\'');
                     LineInput = LineInput.substr(quote_index);
@@ -232,7 +204,7 @@ int main() {
                             LineInput.erase(i, 1);
                         }
                     }
-                    //cout << "LineInput pushed into vector: " << LineInput << endl;
+
                     parts.push_back(LineInput);
 
                 } 
@@ -244,8 +216,6 @@ int main() {
                 if(awk_command == false) {
                     parts = split(LineInput);
                 }
-                //vector <string> parts = split(LineInput);
-                //cout << "LineInput after before execvp: " << LineInput << endl;
                 char** args = vector_to_char_array(parts);
                 execvp(args[0], args);
             } else {
